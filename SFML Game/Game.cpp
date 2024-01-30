@@ -45,36 +45,6 @@ void Game::setPaused(bool paused)
 	m_paused = paused;
 }
 
-void Game::sMovement() 
-{
-	//TODO
-}
-
-void Game::sLifespan()
-{
-	//TODO
-}
-
-void Game::sUserInput()
-{
-	//TODO
-}
-
-void Game::sRender()
-{
-	//TODO
-}
-
-void Game::sEnemySpawner()
-{
-	//TODO
-}
-
-void Game::sCollision()
-{
-	//TODO
-}
-
 // respawn player in the middle of the screen
 void Game::spawnPlayer()
 {
@@ -83,10 +53,10 @@ void Game::spawnPlayer()
 	// create entitiy with player tag
 	auto entity = m_entities.addEntity("player");
 	// give a transform to define spawn position, velocity and angle
-	entity->CTransform = std::make_shared<CTransform>(Vec2(200.0f, 200.0f), Vec2(1.0f, 1.0f), 0.0f);
+	entity->cTransform = std::make_shared<CTransform>(Vec2(200.0f, 200.0f), Vec2(1.0f, 1.0f), 0.0f);
 
 	// add shape component
-	entity->CShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
+	entity->cShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
 
 	// add input component
 	entity->cInput = std::make_shared<CInput>();
@@ -141,9 +111,9 @@ void Game::sLifespan()
 
 	for (auto e : m_entities.getEntities())
 	{
-		if (e->cLifespan)
+		if (e->cLifeSpan)
 		{
-			int remaining = e->cLifespan->lifespan - e->cLifespan->frameCreated;
+			int remaining = e->cLifeSpan->lifespan - e->cLifeSpan->frameCreated;
 
 			if (remaining <= 0)
 			{
@@ -194,7 +164,7 @@ void Game::sRender()
 {
 	m_window.clear();
 
-	for (auto e : m_entities)
+	for (auto e : m_entities.getEntities())
 	{
 		if (e->cTransform && e->cShape)
 		{

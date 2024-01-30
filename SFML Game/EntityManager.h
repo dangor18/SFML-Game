@@ -20,6 +20,6 @@ public:
 
 	std::shared_ptr<Entity> addEntity(const std::string& tag);
 
-	EntityVec& getEntities();
-	EntityVec& getEntities(const std::string& tag);
+	EntityVec& getEntities();							// return all entities
+	EntityVec& getEntities(const std::string& tag);		// return entities of a certain tag
 };
