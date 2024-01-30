@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 // Vector class responsible for 2D vector math
 class Vec2
 {
@@ -18,10 +20,13 @@ public:
 	Vec2 operator / (const float val) const;
 	Vec2 operator * (const float val) const;
 
-	Vec2& operator += (const Vec2& rhs);
-	Vec2 & operator -= (const Vec2& rhs);
-	Vec2 & operator /= (const float val);
-	Vec2 & operator *= (const float val);
+	void operator += (const Vec2& rhs);
+	void operator -= (const Vec2& rhs);
+	void operator /= (const float val);
+	void operator *= (const float val);
 
 	float dist(const Vec2& rhs) const;	// return the distance between two vectors
+	void normalize();					// normalize the created vector
+	float length() const;				// calculate length of the vector
+
 };
