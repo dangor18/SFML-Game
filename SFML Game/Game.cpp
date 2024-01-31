@@ -139,7 +139,7 @@ void Game::init(const std::string& path)
 	}
 
 	m_text.setPosition(0, 0);
-	m_text.setString(std::to_string(score));
+	m_text.setString("Score: " + score);
 
 	spawnPlayer();
 }
@@ -288,6 +288,8 @@ void Game::sEnemySpawner()
 void Game::sRender()
 {
 	m_window.clear();
+	m_text.setString("Score: " + score);
+	m_window.draw(m_text);
 
 	for (auto e : m_entities.getEntities())
 	{
