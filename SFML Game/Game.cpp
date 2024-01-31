@@ -173,19 +173,21 @@ void Game::setPaused(bool paused)
 // respawn player in the middle of the screen
 void Game::spawnPlayer()
 {
-	// TODO: player properties from config
-	
 	// create entitiy with player tag
 	auto entity = m_entities.addEntity("player");
 	// give a transform to define spawn position, velocity and angle
-	entity->cTransform = std::make_shared<CTransform>(Vec2(200.0f, 200.0f), Vec2(1.0f, 1.0f), 0.0f);
+	int width = m_window.getSize().x;
+	int height = m_window.getSize().y;
+	entity->cTransform = std::make_shared<CTransform>(Vec2(width / 2, height / 2), Vec2(m_playerConfig.S, m_playerConfig.S), 0.0f);
 
 	// add shape component
-	entity->cShape = std::make_shared<CShape>(32.0f, 8, sf::Color(10, 10, 10), sf::Color(255, 0, 0), 4.0f);
+	entity->cShape = std::make_shared<CShape>(m_playerConfig.SR, m_playerConfig.V, sf::Color(m_playerConfig.FR, m_playerConfig.FG, m_playerConfig.FB),
+		sf::Color(m_playerConfig.OR, m_playerConfig.OG, m_playerConfig.OB), m_playerConfig.OT);
 
 	// add input component
 	entity->cInput = std::make_shared<CInput>();
 
+	// store player entity
 	m_player = entity;
 }
 
@@ -223,8 +225,17 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
 void Game::sMovement()
 {
 	// TODO: Incorporate ALL entity movemement
+	if (m_player->cInput->up)
+		m_player->cTransform->pos -= Vec2(0, m_player->cTransform->velocity.y);
 
-	m_player->cTransform->pos += m_player->cTransform->velocity;
+	if (m_player->cInput->down)
+		m_player->cTransform->pos += Vec2(0, m_player->cTransform->velocity.y);
+
+	if (m_player->cInput->left)
+		m_player->cTransform->pos -= Vec2(m_player->cTransform->velocity.x, 0);
+
+	if (m_player->cInput->right)
+		m_player->cTransform->pos += Vec2(m_player->cTransform->velocity.x, 0);
 }
 
 void Game::sLifespan()
@@ -326,16 +337,16 @@ void Game::sUserInput()
 			switch (event.key.code)
 			{
 			case sf::Keyboard::W:
-				// TODO set player input component to true
+				m_player->cInput->up = true;
 				break;
 			case sf::Keyboard::A:
-				// TODO
+				m_player->cInput->left = true;
 				break;
 			case sf::Keyboard::S:
-				// TODO
+				m_player->cInput->down = true;
 				break;
 			case sf::Keyboard::D:
-				// TODO
+				m_player->cInput->right = true;
 				break;
 			}
 		}
@@ -345,16 +356,16 @@ void Game::sUserInput()
 			switch (event.key.code)
 			{
 			case sf::Keyboard::W:
-				// TODO set player input component to false
+				m_player->cInput->up = false;
 				break;
 			case sf::Keyboard::A:
-				// TODO
+				m_player->cInput->left = false;
 				break;
 			case sf::Keyboard::S:
-				// TODO
+				m_player->cInput->down = false;
 				break;
 			case sf::Keyboard::D:
-				// TODO
+				m_player->cInput->right = false;
 				break;
 			}
 		}
