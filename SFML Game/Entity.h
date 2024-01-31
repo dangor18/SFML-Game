@@ -22,7 +22,7 @@ public:
 	Entity(const size_t& id, const std::string& tag);
 
 	bool isActive() const;
-	const std::string& tag() const;
-	size_t id() const;
+	const std::string& getTag() const;
+	size_t getID() const;
 	void destroy();
 };

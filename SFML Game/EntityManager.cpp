@@ -1,16 +1,17 @@
 #include "EntityManager.h"
 
+bool isActive(std::shared_ptr<Entity> e) { return !e->isActive(); }
+
 // helper function to remove dead entities from a given vector
 void EntityManager::removeDeadEntities(EntityVec& vec)
 {
-	// TODO use this or removeif (lambda)
-	for (auto e : vec)
+	// delete from vec
+	std::remove_if(m_entities.begin(), m_entities.end(), isActive);
+
+	// delete from map
+	for (auto& kv : m_entityMap)
 	{
-		// this is the sign of an entity we want to remove 
-		if (!e->isActive())
-		{
-			//remove e from vec
-		}
+		std::remove_if(m_entityMap[kv.first].begin(), m_entityMap[kv.first].end(), isActive);
 	}
 }
 
@@ -22,15 +23,13 @@ EntityManager::EntityManager()
 
 void EntityManager::update()
 {
-	// TODO: add entities from m_entitiesToAdd the the proper location(s)
-	// TODO: clean up dead entities from all entities as well as the map vectors
+	removeDeadEntities(m_entities);
 
-
-	// how to iterate through map in c++
-	for (auto& kv : m_entityMap)
+	// add entities to vec and map
+	for (auto& e : m_entitiesToAdd)
 	{
-		kv.first;	// this will be the tag
-		kv.second;	// this will be vector
+		m_entities.push_back(e);
+		m_entityMap[e->getTag()].push_back(e);
 	}
 }
 
