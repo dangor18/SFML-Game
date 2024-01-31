@@ -10,11 +10,136 @@ Game::Game(const std::string& config)
 // create game window and store config data
 void Game::init(const std::string& path)
 {
-	// TODO: Read in config file
+	//Read in the config file 
+	std::fstream fin{ path };
 
-	// setup default window parameters
-	m_window.create(sf::VideoMode(1280, 720), "SFML Game");
-	m_window.setFramerateLimit(60);
+	if (!fin.is_open())
+	{
+		std::cout << "Failed to open: " << path << std::endl;
+		exit(-1);
+	}
+
+	std::string identifier;
+	while (fin >> identifier)
+	{
+		// load window parameters
+		if (identifier == "Window")
+		{
+			unsigned int width, height;
+			fin >> width;
+			fin >> height;
+
+			unsigned int frameLimit, fullScreen;
+			fin >> frameLimit;
+			fin >> fullScreen;
+
+			if (fullScreen == 0)
+			{
+				m_window.create(sf::VideoMode(width, height), "Geometry Wars", sf::Style::Close);
+				m_window.setFramerateLimit(frameLimit);
+			}
+			else if (fullScreen == 1)
+			{
+				auto fullscreenMode{ sf::VideoMode::getFullscreenModes() };
+				//fullscreenMode[0] is the most compatible mode for fullscreen on this device
+				m_window.create(fullscreenMode[0], "Geometry Wars", sf::Style::Fullscreen);
+				m_window.setFramerateLimit(frameLimit);
+			}
+		}
+		// load and set font and text parameters for displaying the score
+		else if (identifier == "Font")
+		{
+			std::string filepath;
+			fin >> filepath;
+			if (!m_font.loadFromFile(filepath))
+			{
+				std::cerr << "Failed to load font. Filepath: " << filepath;
+			}
+
+			m_text.setFont(m_font);
+
+			int fontSize;
+			fin >> fontSize;
+			m_text.setCharacterSize(fontSize);
+
+			sf::Vector3<sf::Uint16> RGB;
+			fin >> RGB.x;
+			fin >> RGB.y;
+			fin >> RGB.z;
+			m_text.setFillColor(sf::Color(RGB.x, RGB.y, RGB.z));
+		}
+		else if (identifier == "Player")
+		{
+			// raidii
+			fin >> m_playerConfig.SR;
+			fin >> m_playerConfig.CR;
+
+			// speed
+			fin >> m_playerConfig.S;
+
+			// fill
+			fin >> m_playerConfig.FR;
+			fin >> m_playerConfig.FG;
+			fin >> m_playerConfig.FB;
+
+			// outline
+			fin >> m_playerConfig.OR;
+			fin >> m_playerConfig.OG;
+			fin >> m_playerConfig.OB;
+			fin >> m_playerConfig.OT;
+
+			// vertices
+			fin >> m_playerConfig.V;
+		}
+		else if (identifier == "Enemy")
+		{
+			fin >> m_enemyConfig.SR;
+			fin >> m_enemyConfig.CR;
+
+			fin >> m_enemyConfig.SMIN;
+			fin >> m_enemyConfig.SMAX;
+
+			fin >> m_enemyConfig.OR;
+			fin >> m_enemyConfig.OG;
+			fin >> m_enemyConfig.OB;
+			fin >> m_enemyConfig.OT;
+
+			fin >> m_enemyConfig.VMIN;
+			fin >> m_enemyConfig.VMAX;
+
+			fin >> m_enemyConfig.L;
+
+			fin >> m_spawnInterval;
+		}
+		else if (identifier == "Bullet")
+		{
+			fin >> m_bulletConfig.SR;
+			fin >> m_bulletConfig.CR;
+
+			fin >> m_bulletConfig.S;
+
+			// fill
+			fin >> m_bulletConfig.FR;
+			fin >> m_bulletConfig.FG;
+			fin >> m_bulletConfig.FB;
+
+			// outline
+			fin >> m_bulletConfig.OR;
+			fin >> m_bulletConfig.OG;
+			fin >> m_bulletConfig.OB;
+			fin >> m_bulletConfig.OT;
+
+			fin >> m_bulletConfig.V;
+
+			fin >> m_bulletConfig.L;
+
+			// special 
+			fin >> m_bulletConfig.S;
+		}
+	}
+
+	m_text.setPosition(0, 0);
+	m_text.setString(std::to_string(score));
 
 	spawnPlayer();
 }
