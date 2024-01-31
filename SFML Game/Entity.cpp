@@ -10,12 +10,12 @@ bool Entity::isActive() const
 	return m_active;
 }
 
-const std::string& Entity::tag() const
+const std::string& Entity::getTag() const
 {
 	return m_tag;
 }
 
-size_t Entity::id() const
+size_t Entity::getID() const
 {
 	return m_id;
 }
