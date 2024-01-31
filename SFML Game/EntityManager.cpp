@@ -36,13 +36,10 @@ void EntityManager::update()
 
 std::shared_ptr<Entity> EntityManager::addEntity(const std::string& tag)
 {
-	// TODO: implement this function so that entities are added to the m_entitiesToAdd vector here, and then added to the proper locations in the update() function
-	//
 	// create the entity shared pointer
 	auto entity = std::shared_ptr<Entity>(new Entity(m_totalEntities++, tag));
 
-	// TODO: this adds directly to the vec, change this
-	m_entities.push_back(entity);
+	m_entitiesToAdd.push_back(entity);
 	return entity;
 }
 
@@ -54,6 +51,5 @@ EntityVec& EntityManager::getEntities()
 	
 EntityVec& EntityManager::getEntities(const std::string& tag)
 {
-	// TODO: this is incorrect, return the correct vector from the map 
-	return m_entities;
+	return m_entityMap[tag];
 }
