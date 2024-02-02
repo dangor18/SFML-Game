@@ -210,14 +210,24 @@ void Game::spawnEnemy()
 	// getting a random number of vertices within [VMIN, VMAX]
 	int vRand = rand() % diff + m_enemyConfig.VMIN;
 
+	// random colours
+	int rRand = rand() % (1 + 255), gRand = rand() % (1 + 255), bRand = rand() % (1 + 255);
+
+	// random speed
+	float sRand = std::fmod(rand(), (1 + m_enemyConfig.SMIN - m_enemyConfig.SMAX));
+
 	// add shape component
-	entity->cShape = std::make_shared<CShape>(m_enemyConfig.SR, vRand, sf::Color(10,10,10),
+	entity->cShape = std::make_shared<CShape>(m_enemyConfig.SR, vRand, sf::Color(rRand, gRand, bRand),
 		sf::Color(m_enemyConfig.OR, m_enemyConfig.OG, m_enemyConfig.OB), m_enemyConfig.OT);
 
 	// give collision component
 	entity->cCollision = std::make_shared<CCollision>(m_enemyConfig.CR);
 
-	entity->cTransform = std::make_shared<CTransform>(Vec2(xRand, yRand), Vec2(m_playerConfig.S, m_playerConfig.S), 0.0f);
+	// transform
+	entity->cTransform = std::make_shared<CTransform>(Vec2(xRand, yRand), Vec2(sRand, sRand), 0.0f);
+
+	// score
+	entity->cScore = std::make_shared<CScore>(vRand * 100);
 }
 
 void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
