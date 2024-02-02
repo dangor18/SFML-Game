@@ -237,7 +237,25 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 	for (int i = 0; i < e->cShape->circle.getPointCount(); i++)
 	{
 		auto entity = m_entities.addEntity("smallenemy");
-		// parameters
+		
+		// get large enemy shape by making a copy
+		sf::CircleShape largeShape =  e->cShape->circle;
+		// add shape component
+		entity->cShape = std::make_shared<CShape>(0.2 * m_enemyConfig.SR, largeShape.getPointCount(), largeShape.getFillColor(),
+			largeShape.getOutlineColor(), 0.2 * m_enemyConfig.OT);
+
+		// give collision component
+		entity->cCollision = std::make_shared<CCollision>(0.2 * m_enemyConfig.CR);
+
+		// transform
+		entity->cTransform = std::make_shared<CTransform>(Vec2(std::cosf(angle), std::sinf(angle)), e->cTransform->pos, 0.0f);
+
+		// score
+		entity->cScore = std::make_shared<CScore>(e->cScore->score * 200);
+
+		// lifespan
+		entity->cLifeSpan = std::make_shared<CLifeSpan>(m_enemyConfig.L, m_currentFrame);
+
 		angle += angle;
 	}
 }
