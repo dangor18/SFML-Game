@@ -287,18 +287,18 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
 
 void Game::sMovement()
 {
-	// TODO: Incorporate ALL entity movemement
+	//	player movement
 	if (m_player->cInput->up)
-		m_player->cTransform->pos -= Vec2(0, m_player->cTransform->velocity.y);
+		m_player->cTransform->pos.y -= m_playerConfig.S;
 
 	if (m_player->cInput->down)
-		m_player->cTransform->pos += Vec2(0, m_player->cTransform->velocity.y);
+		m_player->cTransform->pos.y += m_playerConfig.S;
 
 	if (m_player->cInput->left)
-		m_player->cTransform->pos -= Vec2(m_player->cTransform->velocity.x, 0);
+		m_player->cTransform->pos.x -= m_playerConfig.S;
 
 	if (m_player->cInput->right)
-		m_player->cTransform->pos += Vec2(m_player->cTransform->velocity.x, 0);
+		m_player->cTransform->pos.x += m_playerConfig.S;
 }
 
 void Game::sLifespan()
