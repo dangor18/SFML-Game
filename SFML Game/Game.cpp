@@ -196,9 +196,28 @@ void Game::spawnPlayer()
 
 void Game::spawnEnemy()
 {
-	// TODO: config ...
+	auto entity = m_entities.addEntity("enemy");
 
-	// TODO: SPAWN AND PREVENT OVERLAP WITH WINDOW using radius and random range
+	int diff = 1 + (m_window.getSize().x - m_enemyConfig.SR) - (0 - m_enemyConfig.SR);
+	// getting a random x value within [SR, m_window.width - SR]
+	int xRand = rand() % diff + m_enemyConfig.SR;
+
+	diff = 1 + (m_window.getSize().y - m_enemyConfig.SR) - (0 - m_enemyConfig.SR);
+	// getting a random x value within [SR, m_window.height - SR]
+	int yRand = rand() % diff + m_enemyConfig.SR;
+	
+	diff = 1 + m_enemyConfig.VMAX - m_enemyConfig.VMIN;
+	// getting a random number of vertices within [VMIN, VMAX]
+	int vRand = rand() % diff + m_enemyConfig.VMIN;
+
+	// add shape component
+	entity->cShape = std::make_shared<CShape>(m_enemyConfig.SR, vRand, sf::Color(10,10,10),
+		sf::Color(m_enemyConfig.OR, m_enemyConfig.OG, m_enemyConfig.OB), m_enemyConfig.OT);
+
+	// give collision component
+	entity->cCollision = std::make_shared<CCollision>(m_enemyConfig.CR);
+
+	entity->cTransform = std::make_shared<CTransform>(Vec2(xRand, yRand), Vec2(m_playerConfig.S, m_playerConfig.S), 0.0f);
 }
 
 void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
