@@ -347,8 +347,9 @@ void Game::sEnemySpawner()
 
 void Game::sRender()
 {
-	m_window.clear();
-	m_text.setString("Score: " + score);
+	m_window.clear(); // clear the window at the start
+
+	m_text.setString("Score: " + std::to_string(score));
 	m_window.draw(m_text);
 
 	for (auto e : m_entities.getEntities())
@@ -365,9 +366,11 @@ void Game::sRender()
 			// draw the entities sf::Circle shape
 			m_window.draw(e->cShape->circle);
 		}
-		m_window.display();
 	}
+
+	m_window.display(); // update the window display here, after all entities have been drawn
 }
+
 
 void Game::sUserInput()
 {
