@@ -178,7 +178,7 @@ void Game::spawnPlayer()
 	// give a transform to define spawn position, velocity and angle
 	int width = m_window.getSize().x;
 	int height = m_window.getSize().y;
-	entity->cTransform = std::make_shared<CTransform>(Vec2(width / 2, height / 2), Vec2(m_playerConfig.S, m_playerConfig.S), 0.0f);
+	entity->cTransform = std::make_shared<CTransform>(Vec2(width / 2, height / 2), Vec2(0, 0), 0.0f);
 
 	// add shape component
 	entity->cShape = std::make_shared<CShape>(m_playerConfig.SR, m_playerConfig.V, sf::Color(m_playerConfig.FR, m_playerConfig.FG, m_playerConfig.FB),
