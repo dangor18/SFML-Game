@@ -214,7 +214,7 @@ void Game::spawnEnemy()
 	int rRand = rand() % (1 + 255), gRand = rand() % (1 + 255), bRand = rand() % (1 + 255);
 
 	// random speed
-	float sRand = std::fmod(rand(), (1 + m_enemyConfig.SMIN - m_enemyConfig.SMAX));
+	int sRand = rand() % (1 + (int)m_enemyConfig.SMAX - (int)m_enemyConfig.SMIN) + m_enemyConfig.SMIN;
 
 	// add shape component
 	entity->cShape = std::make_shared<CShape>(m_enemyConfig.SR, vRand, sf::Color(rRand, gRand, bRand),
@@ -223,8 +223,11 @@ void Game::spawnEnemy()
 	// give collision component
 	entity->cCollision = std::make_shared<CCollision>(m_enemyConfig.CR);
 
+	// randomized vec
+	Vec2 vec = Vec2(rand() % (1 + 100 + 100) - 100, rand() % (1 + 100 + 100) - 100);
+	vec.normalize();
 	// transform
-	entity->cTransform = std::make_shared<CTransform>(Vec2(xRand, yRand), Vec2(sRand, sRand), 0.0f);
+	entity->cTransform = std::make_shared<CTransform>(Vec2(xRand, yRand), vec * sRand, 0.0f);
 
 	// score
 	entity->cScore = std::make_shared<CScore>(vRand * 100);
