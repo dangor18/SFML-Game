@@ -31,6 +31,7 @@ void EntityManager::update()
 		m_entities.push_back(e);
 		m_entityMap[e->getTag()].push_back(e);
 	}
+	m_entitiesToAdd.clear();
 }
 
 std::shared_ptr<Entity> EntityManager::addEntity(const std::string& tag)

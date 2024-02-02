@@ -15,7 +15,7 @@ Player:
 
 Enemy (s):
 
-- Enemies will spawn in a random location on the screen every X milliseconds, where X is defined in the configuration file. 
+- Enemies will spawn in a random location on the screen every X frames, where X is defined in the configuration file. 
 - Enemies must not overlap the sides of the screen at the time of spawn.
 - Enemies shapes have random number of vertices, between a given minimum and maximum number, which is specified in the config file.
 - Enemy shape radius will be specified in the configuration file. Enemies will be given a random color upon spawning.
