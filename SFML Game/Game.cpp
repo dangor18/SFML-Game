@@ -320,7 +320,13 @@ void Game::sLifespan()
 			}
 			else
 			{
-				//1:25
+				// adjust gamma channel
+				int r = e->cShape->circle.getFillColor().r;
+				int g = e->cShape->circle.getFillColor().g;
+				int b = e->cShape->circle.getFillColor().b;
+				int alpha = e->cShape->circle.getFillColor().a;
+				auto fill = sf::Color(r, g, b, alpha);
+				e->cShape->circle.setFillColor(fill);
 			}
 		}
 	}
