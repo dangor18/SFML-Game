@@ -214,7 +214,22 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 
 void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & target)
 {
-	// TODO: ...
+	// create entitiy with bullet tag
+	auto bullet = m_entities.addEntity("bullet");
+
+	// give a transform to define spawn position, velocity and angle
+	// note starting position equals that of entities
+	bullet->cTransform = std::make_shared<CTransform>(entity->cTransform->pos, Vec2(m_bulletConfig.S, m_bulletConfig.S), 0.0f);
+
+	// add shape component
+	bullet->cShape = std::make_shared<CShape>(m_bulletConfig.SR, m_bulletConfig.V, sf::Color(m_bulletConfig.FR, m_bulletConfig.FG, m_bulletConfig.FB),
+		sf::Color(m_bulletConfig.OR, m_bulletConfig.OG, m_bulletConfig.OB), m_bulletConfig.OT);
+
+	// give collision component
+	bullet->cCollision = std::make_shared<CCollision>(m_bulletConfig.CR);
+
+	// give lifespan to fade away
+	bullet->cLifeSpan = std::make_shared<CLifeSpan>(m_bulletConfig.L, m_currentFrame);
 }
 
 void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity)
