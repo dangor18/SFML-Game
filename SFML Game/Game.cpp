@@ -303,11 +303,6 @@ void Game::sMovement()
 
 void Game::sLifespan()
 {
-	// TODO:
-	// for all entities, if it has a lifespan and is alive
-	// scale its alpha channel (linearly with lifespan)
-	// if alive and lifespan is up then destroy
-
 	for (auto e : m_entities.getEntities())
 	{
 		if (e->cLifeSpan)
