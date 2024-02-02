@@ -198,15 +198,15 @@ void Game::spawnEnemy()
 {
 	auto entity = m_entities.addEntity("enemy");
 
-	int diff = 1 + (m_window.getSize().x - m_enemyConfig.SR) - (0 - m_enemyConfig.SR);
+	int maxPosX = (m_window.getSize().x - m_enemyConfig.SR) - m_enemyConfig.SR;
 	// getting a random x value within [SR, m_window.width - SR]
-	int xRand = rand() % diff + m_enemyConfig.SR;
+	int xRand = rand() % (1 + m_enemyConfig.SR - maxPosX) + m_enemyConfig.SR;
 
-	diff = 1 + (m_window.getSize().y - m_enemyConfig.SR) - (0 - m_enemyConfig.SR);
+	int maxPosY = (m_window.getSize().y - m_enemyConfig.SR) - m_enemyConfig.SR;
 	// getting a random x value within [SR, m_window.height - SR]
-	int yRand = rand() % diff + m_enemyConfig.SR;
+	int yRand = rand() % (1 + m_enemyConfig.SR - maxPosY) + m_enemyConfig.SR;
 	
-	diff = 1 + m_enemyConfig.VMAX - m_enemyConfig.VMIN;
+	int diff = 1 + m_enemyConfig.VMAX - m_enemyConfig.VMIN;
 	// getting a random number of vertices within [VMIN, VMAX]
 	int vRand = rand() % diff + m_enemyConfig.VMIN;
 
