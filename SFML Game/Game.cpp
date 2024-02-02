@@ -232,8 +232,6 @@ void Game::spawnEnemy()
 
 void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 {
-	// TODO: ...
-	
 	float angle = 360.0f / e->cShape->circle.getPointCount();
 	// How do we get the small enemies vec2 for velocity using enemy speed and angle
 	for (int i = 0; i < e->cShape->circle.getPointCount(); i++)
@@ -340,7 +338,11 @@ void Game::sCollision()
 
 void Game::sEnemySpawner()
 {
-	// TODO: Count number of frames since last spawning an enemy, spawn and then reset
+	// when timer hits spawn an enemy
+	if (m_currentFrame % m_spawnInterval == 0)
+	{
+		spawnEnemy();
+	}
 }
 
 void Game::sRender()
