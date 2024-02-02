@@ -267,7 +267,15 @@ void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & target)
 
 	// give a transform to define spawn position, velocity and angle
 	// note starting position equals that of entities
-	bullet->cTransform = std::make_shared<CTransform>(entity->cTransform->pos, Vec2(m_bulletConfig.S, m_bulletConfig.S), 0.0f);
+
+
+	Vec2 difference(target.x - entity->cTransform->pos.x, target.y - entity->cTransform->pos.y);
+	// normalize vector to set scalar to 1
+	difference.normalize();
+
+	Vec2 velocity(m_bulletConfig.S * difference.x, m_bulletConfig.S * difference.y);
+
+	bullet->cTransform = std::make_shared<CTransform>(entity->cTransform->pos, velocity, 0);
 
 	// add shape component
 	bullet->cShape = std::make_shared<CShape>(m_bulletConfig.SR, m_bulletConfig.V, sf::Color(m_bulletConfig.FR, m_bulletConfig.FG, m_bulletConfig.FB),
@@ -299,6 +307,12 @@ void Game::sMovement()
 
 	if (m_player->cInput->right)
 		m_player->cTransform->pos.x += m_playerConfig.S;
+
+	// move all other entities
+	for (auto e : m_entities.getEntities())
+	{
+		e->cTransform->pos += e->cTransform->velocity;
+	}
 }
 
 void Game::sLifespan()
