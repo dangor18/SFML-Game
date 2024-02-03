@@ -390,7 +390,7 @@ void Game::sCollision()
 
 		if (diffSqr < temp) {
 			m_player->destroy();
-			m_entities.update();
+			e->destroy();
 			spawnPlayer();
 		}
 	}
@@ -403,7 +403,7 @@ void Game::sCollision()
 
 		if (diffSqr < std::pow(m_playerConfig.CR + m_enemyConfig.CR, 2)) {
 			m_player->destroy();
-			m_entities.update();
+			e->destroy();
 			spawnPlayer();
 		}
 	}
