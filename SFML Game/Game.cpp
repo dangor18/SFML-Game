@@ -346,18 +346,44 @@ void Game::sLifespan()
 
 void Game::sCollision()
 {
-	// TODO: use collision radius not shape radius
+	// NB USE COLLISION RADIUS NOT SHAPE RADIUS
 
+	// if collision between enemy and window border then adjust vector accordingly
+	for (auto e : m_entities.getEntities())
+	{
+		if (e->cTransform->pos.x <= m_enemyConfig.CR || e->cTransform->pos.x >= m_window.getSize().x - m_enemyConfig.CR)
+			e->cTransform->velocity.x = -e->cTransform->velocity.x;
+
+		if (e->cTransform->pos.y <= m_enemyConfig.CR || e->cTransform->pos.y >= m_window.getSize().y - m_enemyConfig.CR)
+			e->cTransform->velocity.y = -e->cTransform->velocity.y;
+	}
+
+	// collision of player with border
+	if (m_player->cTransform->pos.x <= m_playerConfig.CR)
+		m_player->cTransform->pos.x += m_playerConfig.S;
+
+	if (m_player->cTransform->pos.x >= m_window.getSize().x - m_playerConfig.CR)
+		m_player->cTransform->pos.x -= m_playerConfig.S;
+
+	if (m_player->cTransform->pos.y <= m_playerConfig.CR)
+		m_player->cTransform->pos.y += m_playerConfig.S;
+
+	if (m_player->cTransform->pos.y >= m_window.getSize().y - m_playerConfig.CR)
+		m_player->cTransform->pos.y -= m_playerConfig.S;
+
+	// if collision between enemy and player, spawnPlayer and destroy enemy
 	for (auto e : m_entities.getEntities("enemy"))
 	{
-		// if collision between e and player, spawnPlayer and destroy enemy
+		
 	}
 
+	// if collision between small enemy and player, spawnPlayer and destroy enemy
 	for (auto e : m_entities.getEntities("smallenemy"))
 	{
-		// if collision between e and player, spawnPlayer and destroy enemy
+	
 	}
 
+	// if collision between bullet and enemies
 	for (auto e : m_entities.getEntities("bullet"))
 	{
 		for (auto e : m_entities.getEntities("enemy"))
