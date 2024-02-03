@@ -349,7 +349,17 @@ void Game::sCollision()
 	// NB USE COLLISION RADIUS NOT SHAPE RADIUS
 
 	// if collision between enemy and window border then adjust vector accordingly
-	for (auto e : m_entities.getEntities())
+	for (auto e : m_entities.getEntities("enemy"))
+	{
+		if (e->cTransform->pos.x <= m_enemyConfig.CR || e->cTransform->pos.x >= m_window.getSize().x - m_enemyConfig.CR)
+			e->cTransform->velocity.x = -e->cTransform->velocity.x;
+
+		if (e->cTransform->pos.y <= m_enemyConfig.CR || e->cTransform->pos.y >= m_window.getSize().y - m_enemyConfig.CR)
+			e->cTransform->velocity.y = -e->cTransform->velocity.y;
+	}
+
+	// if collision between enemy and window border then adjust vector accordingly
+	for (auto e : m_entities.getEntities("smallenemy"))
 	{
 		if (e->cTransform->pos.x <= m_enemyConfig.CR || e->cTransform->pos.x >= m_window.getSize().x - m_enemyConfig.CR)
 			e->cTransform->velocity.x = -e->cTransform->velocity.x;
