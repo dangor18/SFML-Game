@@ -235,7 +235,8 @@ void Game::spawnEnemy()
 
 void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 {
-	float angle = 360.0f / e->cShape->circle.getPointCount();
+	float angle = 0;
+	float angleIncrement = 2 * std::numbers::pi / e->cShape->circle.getPointCount();
 	// How do we get the small enemies vec2 for velocity using enemy speed and angle
 	for (int i = 0; i < e->cShape->circle.getPointCount(); i++)
 	{
@@ -244,14 +245,18 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 		// get large enemy shape by making a copy
 		sf::CircleShape largeShape =  e->cShape->circle;
 		// add shape component
-		entity->cShape = std::make_shared<CShape>(0.2 * m_enemyConfig.SR, largeShape.getPointCount(), largeShape.getFillColor(),
-			largeShape.getOutlineColor(), 0.2 * m_enemyConfig.OT);
+		int smallSR = 0.5 * m_enemyConfig.SR;
+		entity->cShape = std::make_shared<CShape>(smallSR, largeShape.getPointCount(), largeShape.getFillColor(),
+			largeShape.getOutlineColor(), 0.5 * m_enemyConfig.OT);
 
 		// give collision component
-		entity->cCollision = std::make_shared<CCollision>(0.2 * m_enemyConfig.CR);
+		int smallCR = 0.5 * m_enemyConfig.CR;
+		entity->cCollision = std::make_shared<CCollision>(smallCR);
 
 		// transform
-		entity->cTransform = std::make_shared<CTransform>(Vec2(std::cosf(angle), std::sinf(angle)), e->cTransform->pos, 0.0f);
+		Vec2 smallPos = e->cTransform->pos + Vec2(cos(angle), sin(angle)) * largeShape.getRadius();
+		Vec2 smallVelocity = e->cTransform->velocity + Vec2(cos(angle), sin(angle)) * e->cTransform->velocity.length() * 0.5;
+		entity->cTransform = std::make_shared<CTransform>(smallPos, smallVelocity, 0.0f);
 
 		// score
 		entity->cScore = std::make_shared<CScore>(e->cScore->score * 200);
@@ -259,7 +264,7 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 		// lifespan
 		entity->cLifeSpan = std::make_shared<CLifeSpan>(m_enemyConfig.L, m_currentFrame);
 
-		angle += angle;
+		angle += angleIncrement;
 	}
 }
 
@@ -421,6 +426,8 @@ void Game::sCollision()
 				score += e->cScore->score;
 				b->destroy();
 				e->destroy();
+
+				spawnSmallEnemies(e);
 			}
 		}
 
