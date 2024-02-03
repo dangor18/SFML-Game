@@ -409,11 +409,17 @@ void Game::sCollision()
 	}
 
 	// if collision between bullet and enemies
-	for (auto e : m_entities.getEntities("bullet"))
+	for (auto b : m_entities.getEntities("bullet"))
 	{
 		for (auto e : m_entities.getEntities("enemy"))
 		{
-			
+			Vec2 diffVec = b->cTransform->pos - e->cTransform->pos;
+			int diffSqr = diffVec.x * diffVec.x + diffVec.y * diffVec.y;
+
+			if (diffSqr < std::pow(m_bulletConfig.CR + m_enemyConfig.CR, 2)) {
+				b->destroy();
+				e->destroy();
+			}
 		}
 
 		for (auto e : m_entities.getEntities("smallenemy"))
