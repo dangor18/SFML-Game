@@ -384,13 +384,28 @@ void Game::sCollision()
 	// if collision between enemy and player, spawnPlayer and destroy enemy
 	for (auto e : m_entities.getEntities("enemy"))
 	{
-		
+		Vec2 diffVec = m_player->cTransform->pos - e->cTransform->pos;
+		int diffSqr = diffVec.x * diffVec.x + diffVec.y * diffVec.y;
+		int temp = (m_playerConfig.CR + m_enemyConfig.CR)* (m_playerConfig.CR + m_enemyConfig.CR);
+
+		if (diffSqr < temp) {
+			m_player->destroy();
+			m_entities.update();
+			spawnPlayer();
+		}
 	}
 
 	// if collision between small enemy and player, spawnPlayer and destroy enemy
 	for (auto e : m_entities.getEntities("smallenemy"))
 	{
-	
+		Vec2 diffVec = m_player->cTransform->pos - e->cTransform->pos;
+		int diffSqr = diffVec.x * diffVec.x + diffVec.y * diffVec.y;
+
+		if (diffSqr < std::pow(m_playerConfig.CR + m_enemyConfig.CR, 2)) {
+			m_player->destroy();
+			m_entities.update();
+			spawnPlayer();
+		}
 	}
 
 	// if collision between bullet and enemies
