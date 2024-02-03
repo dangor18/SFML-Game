@@ -200,11 +200,11 @@ void Game::spawnEnemy()
 
 	int maxPosX = (m_window.getSize().x - m_enemyConfig.SR) - m_enemyConfig.SR;
 	// getting a random x value within [SR, m_window.width - SR]
-	int xRand = rand() % (1 + m_enemyConfig.SR - maxPosX) + m_enemyConfig.SR;
+	int xRand = rand() % (m_enemyConfig.SR - maxPosX) + m_enemyConfig.SR;
 
 	int maxPosY = (m_window.getSize().y - m_enemyConfig.SR) - m_enemyConfig.SR;
 	// getting a random x value within [SR, m_window.height - SR]
-	int yRand = rand() % (1 + m_enemyConfig.SR - maxPosY) + m_enemyConfig.SR;
+	int yRand = rand() % (m_enemyConfig.SR - maxPosY) + m_enemyConfig.SR;
 	
 	int diff = 1 + m_enemyConfig.VMAX - m_enemyConfig.VMIN;
 	// getting a random number of vertices within [VMIN, VMAX]
@@ -389,6 +389,7 @@ void Game::sCollision()
 		int temp = (m_playerConfig.CR + m_enemyConfig.CR)* (m_playerConfig.CR + m_enemyConfig.CR);
 
 		if (diffSqr < temp) {
+			score = 0;
 			m_player->destroy();
 			e->destroy();
 			spawnPlayer();
@@ -417,6 +418,7 @@ void Game::sCollision()
 			int diffSqr = diffVec.x * diffVec.x + diffVec.y * diffVec.y;
 
 			if (diffSqr < std::pow(m_bulletConfig.CR + m_enemyConfig.CR, 2)) {
+				score += e->cScore->score;
 				b->destroy();
 				e->destroy();
 			}
