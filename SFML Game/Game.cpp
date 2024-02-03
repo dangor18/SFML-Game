@@ -259,7 +259,7 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e)
 		entity->cTransform = std::make_shared<CTransform>(smallPos, smallVelocity, 0.0f);
 
 		// score
-		entity->cScore = std::make_shared<CScore>(e->cScore->score * 200);
+		entity->cScore = std::make_shared<CScore>(e->cScore->score * 2);
 
 		// lifespan
 		entity->cLifeSpan = std::make_shared<CLifeSpan>(m_enemyConfig.L, m_currentFrame);
@@ -433,7 +433,14 @@ void Game::sCollision()
 
 		for (auto e : m_entities.getEntities("smallenemy"))
 		{
-			
+			Vec2 diffVec = b->cTransform->pos - e->cTransform->pos;
+			int diffSqr = diffVec.x * diffVec.x + diffVec.y * diffVec.y;
+
+			if (diffSqr < std::pow(m_bulletConfig.CR + m_enemyConfig.CR, 2)) {
+				score += e->cScore->score;
+				b->destroy();
+				e->destroy();
+			}
 		}
 	}
 }
