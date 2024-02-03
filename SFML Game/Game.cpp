@@ -155,6 +155,7 @@ void Game::run()
 		// update entity manager
 		m_entities.update();
 		// call systems
+		sLifespan();
 		sEnemySpawner();
 		sMovement();
 		sCollision();
@@ -275,8 +276,6 @@ void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vec2 & target)
 
 	// give a transform to define spawn position, velocity and angle
 	// note starting position equals that of entities
-
-
 	Vec2 difference(target.x - entity->cTransform->pos.x, target.y - entity->cTransform->pos.y);
 	// normalize vector to set scalar to 1
 	difference.normalize();
@@ -329,7 +328,7 @@ void Game::sLifespan()
 	{
 		if (e->cLifeSpan)
 		{
-			int remaining = e->cLifeSpan->lifespan - e->cLifeSpan->frameCreated;
+			int remaining = e->cLifeSpan->lifespan - (m_currentFrame - e->cLifeSpan->frameCreated);
 
 			if (remaining <= 0)
 			{
@@ -338,12 +337,26 @@ void Game::sLifespan()
 			else
 			{
 				// adjust gamma channel
+				int alphaDecrement = 0;
+				if (e->getTag() == "smallenemy")
+					alphaDecrement = 255 / m_enemyConfig.L;
+				else if (e->getTag() == "bullet")
+					alphaDecrement = 255 / m_bulletConfig.L;
+
 				int r = e->cShape->circle.getFillColor().r;
 				int g = e->cShape->circle.getFillColor().g;
 				int b = e->cShape->circle.getFillColor().b;
-				int alpha = e->cShape->circle.getFillColor().a;
+				int alpha = std::max(e->cShape->circle.getFillColor().a - alphaDecrement, 0); // prevents underflow
 				auto fill = sf::Color(r, g, b, alpha);
+
+				r = e->cShape->circle.getOutlineColor().r;
+				g = e->cShape->circle.getOutlineColor().g;
+				b = e->cShape->circle.getOutlineColor().b;
+				alpha = std::max(e->cShape->circle.getOutlineColor().a - alphaDecrement, 0); // prevents underflow
+				auto outline = sf::Color(r, g, b, alpha);
+
 				e->cShape->circle.setFillColor(fill);
+				e->cShape->circle.setOutlineColor(outline);
 			}
 		}
 	}
