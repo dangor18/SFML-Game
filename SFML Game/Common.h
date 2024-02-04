@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+#include "imgui.h"
+#include "imgui-SFML.h"
+
 #include <vector>
 #include <iostream>
 #include <memory>
