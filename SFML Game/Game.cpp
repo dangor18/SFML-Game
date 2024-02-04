@@ -146,23 +146,22 @@ void Game::init(const std::string& path)
 
 void Game::run()
 {
-	// TODO: add pause functionality here
-
-	// while the game is running = true...
 	while (m_running)
 	{
-		///if (!m_paused)
-		// update entity manager
 		m_entities.update();
-		// call systems
-		sLifespan();
-		sEnemySpawner();
-		sMovement();
-		sCollision();
+
+		if (!m_paused)
+		{
+			sLifespan();
+			sEnemySpawner();
+			sMovement();
+			sCollision();
+		}
 		sUserInput();
 		sRender();
 
-		m_currentFrame++;
+		//Increment the current frame
+		++m_currentFrame;
 	}
 }
 
@@ -521,6 +520,9 @@ void Game::sUserInput()
 				break;
 			case sf::Keyboard::D:
 				m_player->cInput->right = true;
+				break;
+			case sf::Keyboard::P:
+				m_paused ? setPaused(false) : setPaused(true);
 				break;
 			}
 		}
