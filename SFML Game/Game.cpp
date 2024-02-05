@@ -33,18 +33,10 @@ void Game::init(const std::string& path)
 			fin >> frameLimit;
 			fin >> fullScreen;
 
-			if (fullScreen == 0)
-			{
-				m_window.create(sf::VideoMode(width, height), "Geometry Wars", sf::Style::Close);
-				m_window.setFramerateLimit(frameLimit);
-			}
-			else if (fullScreen == 1)
-			{
-				auto fullscreenMode{ sf::VideoMode::getFullscreenModes() };
-				//fullscreenMode[0] is the most compatible mode for fullscreen on this device
-				m_window.create(fullscreenMode[0], "Geometry Wars", sf::Style::Fullscreen);
-				m_window.setFramerateLimit(frameLimit);
-			}
+			m_window.create(sf::VideoMode(width, height), "Geometry Wars", sf::Style::Close);
+			m_window.setFramerateLimit(frameLimit);
+
+			ImGui::SFML::Init(m_window);
 		}
 		// load and set font and text parameters for displaying the score
 		else if (identifier == "Font")
@@ -489,6 +481,7 @@ void Game::sRender()
 		}
 	}
 
+	ImGui::SFML::Render(m_window);
 	m_window.display(); // update the window display here, after all entities have been drawn
 }
 
@@ -498,10 +491,12 @@ void Game::sUserInput()
 	sf::Event event;
 	while (m_window.pollEvent(event))
 	{
+		ImGui::SFML::ProcessEvent(event);
 		if (event.type == sf::Event::Closed)
 		{
 			// setting this to false will terminate the run() function
 			m_running = false;
+			ImGui::SFML::Shutdown();
 		}
 
 		// manage key press events
@@ -559,5 +554,6 @@ void Game::sUserInput()
 				// spawn special weapon 
 			}
 		}
+		ImGui::SFML::Update(m_window, deltaClock.restart());
 	}
 }

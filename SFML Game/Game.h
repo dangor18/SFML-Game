@@ -10,6 +10,7 @@ struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
 
 class Game 
 {
+	sf::Clock			deltaClock;
 	sf::RenderWindow	m_window;			// the window we will draw to
 	bool				m_paused = false;	// whether we update the game logic
 	bool				m_running = true;	// whether the game is running
