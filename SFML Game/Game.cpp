@@ -10,7 +10,7 @@ Game::Game(const std::string& config)
 // create game window and store config data
 void Game::init(const std::string& path)
 {
-	//Read in the config file 
+	//Read in the config file
 	std::fstream fin{ path };
 
 	if (!fin.is_open())
@@ -140,6 +140,12 @@ void Game::run()
 {
 	while (m_running)
 	{
+		// ImGui stuff here
+		ImGui::SFML::Update(m_window, deltaClock.restart());
+		ImGui::Begin("text 1");
+		ImGui::Text("text 2");
+		ImGui::End();
+
 		m_entities.update();
 
 		if (!m_paused)
@@ -480,8 +486,10 @@ void Game::sRender()
 			m_window.draw(e->cShape->circle);
 		}
 	}
-
+	// ImGui stuff here
+	
 	ImGui::SFML::Render(m_window);
+	
 	m_window.display(); // update the window display here, after all entities have been drawn
 }
 
@@ -494,9 +502,9 @@ void Game::sUserInput()
 		ImGui::SFML::ProcessEvent(event);
 		if (event.type == sf::Event::Closed)
 		{
+			//m_window.close();
 			// setting this to false will terminate the run() function
 			m_running = false;
-			ImGui::SFML::Shutdown();
 		}
 
 		// manage key press events
@@ -554,6 +562,5 @@ void Game::sUserInput()
 				// spawn special weapon 
 			}
 		}
-		ImGui::SFML::Update(m_window, deltaClock.restart());
 	}
 }
