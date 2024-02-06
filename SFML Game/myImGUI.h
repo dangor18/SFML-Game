@@ -8,7 +8,7 @@ class myImGUI
 public:
 	myImGUI();
 	void init(sf::RenderWindow & window, int spawnInterval);
-	void update(sf::Clock deltaClock);
+	void update(sf::Clock & deltaClock);
 	void processEvent(sf::Event event);
 	void render();
 };
