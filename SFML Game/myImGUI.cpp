@@ -13,8 +13,9 @@ void myImGUI::init(sf::RenderWindow* window, int spawnInterval)
 void myImGUI::update(sf::Clock& deltaClock)
 {
     ImGui::SFML::Update(*m_window, deltaClock.restart());
-    ImGui::Begin("text 1");
-    ImGui::Text("text 2");
+    ImGui::Begin("Debug Tool");
+    
+
     ImGui::End();
 }
 
