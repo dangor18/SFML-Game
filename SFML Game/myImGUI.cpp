@@ -1,27 +1,29 @@
 #include "myImGUI.h"
 
-myImGUI::myImGUI()
-{}
+// default constructor
+myImGUI::myImGUI() {}
 
-void myImGUI::init(sf::RenderWindow& window, int spawnInterval)
+// Constructor using std::shared_ptr
+void myImGUI::init(sf::RenderWindow* window, int spawnInterval)
 {
-	m_window = std::make_shared<sf::RenderWindow>(window);
-	m_spawnInterval = spawnInterval;
+    m_window = window;
+    ImGui::SFML::Init(*m_window);
 }
 
-void myImGUI::update(sf::Clock & deltaClock)
+void myImGUI::update(sf::Clock& deltaClock)
 {
-	// update imgui for this freame with the time that the last frame took
-	ImGui::SFML::Update(*m_window.get(), deltaClock.restart());
-	ImGui::Begin("Debug Panel");
-	ImGui::End();
+    ImGui::SFML::Update(*m_window, deltaClock.restart());
+    ImGui::Begin("text 1");
+    ImGui::Text("text 2");
+    ImGui::End();
 }
 
-void myImGUI::processEvent(sf::Event event)
+void myImGUI::processEvent(sf::Event & event) 
 {
-
+    ImGui::SFML::ProcessEvent(*m_window, event);
 }
+
 void myImGUI::render()
 {
-
+    ImGui::SFML::Render(*m_window);
 }

@@ -36,7 +36,7 @@ void Game::init(const std::string& path)
 			m_window.create(sf::VideoMode(width, height), "Geometry Wars", sf::Style::Close);
 			m_window.setFramerateLimit(frameLimit);
 
-			ImGui::SFML::Init(m_window);
+			imGUI.init(&m_window, m_spawnInterval);
 		}
 		// load and set font and text parameters for displaying the score
 		else if (identifier == "Font")
@@ -141,10 +141,7 @@ void Game::run()
 	while (m_running)
 	{
 		// ImGui stuff here
-		ImGui::SFML::Update(m_window, deltaClock.restart());
-		ImGui::Begin("text 1");
-		ImGui::Text("text 2");
-		ImGui::End();
+		imGUI.update(deltaClock);
 
 		m_entities.update();
 
@@ -488,7 +485,7 @@ void Game::sRender()
 	}
 	// ImGui stuff here
 	
-	ImGui::SFML::Render(m_window);
+	imGUI.render();
 	
 	m_window.display(); // update the window display here, after all entities have been drawn
 }
@@ -499,7 +496,7 @@ void Game::sUserInput()
 	sf::Event event;
 	while (m_window.pollEvent(event))
 	{
-		ImGui::SFML::ProcessEvent(event);
+		imGUI.processEvent(event);
 		if (event.type == sf::Event::Closed)
 		{
 			//m_window.close();
