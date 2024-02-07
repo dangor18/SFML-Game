@@ -460,6 +460,8 @@ void Game::sCollision()
 
 void Game::sEnemySpawner()
 {
+	// update spawn rate
+	m_spawnInterval = imGUI.m_spawnInterval;
 	// when timer hits spawn an enemy
 	if (m_currentFrame % m_spawnInterval == 0)
 	{

@@ -27,7 +27,7 @@ void myImGUI::update(sf::Clock& deltaClock)
             ImGui::Checkbox("Spawning", &isSpawnerActive);
             ImGui::Indent();
             ImGui::SliderInt("Spawn Rate", &m_spawnInterval, 10, 240);
-            spawnFlag = ImGui::Button("Spawn", ImVec2(120, 30));
+            //spawnFlag = ImGui::Button("Spawn", ImVec2(120, 30));
             ImGui::Unindent();
             ImGui::Checkbox("Special Weapon", &isSpecialShootActive);
 

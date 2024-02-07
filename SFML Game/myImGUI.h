@@ -12,7 +12,7 @@ public:
 	void processEvent(sf::Event& event);
 	
 	// spawn rate
-	int m_spawnInterval = 999999;
+	int m_spawnInterval = 60;
 	
 	// flags
 	bool spawnFlag = false;
