@@ -15,12 +15,10 @@ public:
 	int m_spawnInterval = 60;
 	
 	// flags
-	bool spawnFlag = false;
 	bool isLifeSpanActive = true;
 	bool isSpawnerActive = true;
 	bool isMovementActive = true;
-	bool isSpecialShootActive = true;
+	bool isSpecialActive = true;
 	bool isCollisionActive = true;
 	bool isRenderActive = true;
-	bool isGuiActive = true;
 };

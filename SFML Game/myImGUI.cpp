@@ -26,21 +26,60 @@ void myImGUI::update(sf::Clock& deltaClock)
             ImGui::Checkbox("Collision", &isCollisionActive);
             ImGui::Checkbox("Spawning", &isSpawnerActive);
             ImGui::Indent();
-            ImGui::SliderInt("Spawn Rate", &m_spawnInterval, 10, 240);
-            //spawnFlag = ImGui::Button("Spawn", ImVec2(120, 30));
+            ImGui::SliderInt("Spawn Rate", &m_spawnInterval, 5, 200);
             ImGui::Unindent();
-            ImGui::Checkbox("Special Weapon", &isSpecialShootActive);
+            ImGui::Checkbox("Special Weapon", &isSpecialActive);
 
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Broccoli"))
+
+        if (ImGui::BeginTabItem("Entity Manager"))
         {
-            ImGui::Text("This is the Broccoli tab!\nblah blah blah blah blah");
-            ImGui::EndTabItem();
-        }
-        if (ImGui::BeginTabItem("Cucumber"))
-        {
-            ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+            if (ImGui::TreeNode("Entities by tag"))
+            {
+                if (ImGui::CollapsingHeader("Bullet Entity", ImGuiTreeNodeFlags_None))
+                {
+                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
+                    for (int i = 0; i < 5; i++)
+                        ImGui::Text("Some content %d", i);
+                }
+
+                if (ImGui::CollapsingHeader("Enemy Entity", ImGuiTreeNodeFlags_None))
+                {
+                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
+                    for (int i = 0; i < 5; i++)
+                        ImGui::Text("Some content %d", i);
+                }
+
+                if (ImGui::CollapsingHeader("Smallenemy Entity", ImGuiTreeNodeFlags_None))
+                {
+                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
+                    for (int i = 0; i < 5; i++)
+                        ImGui::Text("Some content %d", i);
+                }
+
+                if (ImGui::CollapsingHeader("Player Entity", ImGuiTreeNodeFlags_None))
+                {
+                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
+                    for (int i = 0; i < 5; i++)
+                        ImGui::Text("Some content %d", i);
+                }
+
+                ImGui::TreePop();
+            }
+
+            if (ImGui::TreeNode("All Entities"))
+            {
+                if (ImGui::CollapsingHeader("Header", ImGuiTreeNodeFlags_None))
+                {
+                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
+                    for (int i = 0; i < 5; i++)
+                        ImGui::Text("Some content %d", i);
+                }
+                
+
+                ImGui::TreePop();
+            }
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();

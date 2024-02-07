@@ -158,7 +158,7 @@ void Game::run()
 				sCollision();
 		}
 		sUserInput();
-		if (imGUI.isLifeSpanActive)
+		if (imGUI.isRenderActive)
 			sRender();
 
 		//Increment the current frame
