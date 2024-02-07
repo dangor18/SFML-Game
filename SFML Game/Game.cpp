@@ -147,13 +147,19 @@ void Game::run()
 
 		if (!m_paused)
 		{
-			sLifespan();
-			sEnemySpawner();
-			sMovement();
-			sCollision();
+			// check flags before running system
+			if (imGUI.isLifeSpanActive)
+				sLifespan();
+			if (imGUI.isSpawnerActive)
+				sEnemySpawner();
+			if (imGUI.isMovementActive)
+				sMovement();
+			if (imGUI.isCollisionActive)
+				sCollision();
 		}
 		sUserInput();
-		sRender();
+		if (imGUI.isLifeSpanActive)
+			sRender();
 
 		//Increment the current frame
 		++m_currentFrame;
