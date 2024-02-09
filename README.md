@@ -1,5 +1,5 @@
 # Geometry Wars Game
-Developed following Dave Churchill's COMP4300 course for assignment 2. \
+Developed following Dave Churchill's COMP4300 game development course for assignment 2. \
 Link to the course: https://youtube.com/playlist?list=PL_xRyXins849E1WPuutEApdyTa0Bfxhzq&si=qjwXczbwGVy4k0X_
 ### Tools used: C++, SFML, ImGUI
 ### Architecture: ECS
