@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "Entity.h"
 #include "EntityManager.h"
+#include "myImGUI.h"
 
 struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
 struct EnemyConfig { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L; float SMIN, SMAX; };

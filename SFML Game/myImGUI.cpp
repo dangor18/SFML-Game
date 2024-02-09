@@ -11,7 +11,7 @@ void myImGUI::init(sf::RenderWindow* window, int spawnInterval)
     ImGui::GetStyle().ScaleAllSizes(1.0f);
 }
 
-void myImGUI::update(sf::Clock& deltaClock)
+void myImGUI::update(sf::Clock& deltaClock, EntityManager & m_entities)
 {
     ImGui::SFML::Update(*m_window, deltaClock.restart());
     ImGui::Begin("Debug Tool");
@@ -33,36 +33,17 @@ void myImGUI::update(sf::Clock& deltaClock)
             ImGui::EndTabItem();
         }
 
+        const char* types[] = {"enemy", "smallenemy", "bullet", "player"};
         if (ImGui::BeginTabItem("Entity Manager"))
         {
             if (ImGui::TreeNode("Entities by tag"))
             {
-                if (ImGui::CollapsingHeader("Bullet Entity", ImGuiTreeNodeFlags_None))
+                for (const char* type : types)
                 {
-                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-                    for (int i = 0; i < 5; i++)
-                        ImGui::Text("Some content %d", i);
-                }
+                    if (ImGui::CollapsingHeader(type, ImGuiTreeNodeFlags_None))
+                    {
 
-                if (ImGui::CollapsingHeader("Enemy Entity", ImGuiTreeNodeFlags_None))
-                {
-                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-                    for (int i = 0; i < 5; i++)
-                        ImGui::Text("Some content %d", i);
-                }
-
-                if (ImGui::CollapsingHeader("Smallenemy Entity", ImGuiTreeNodeFlags_None))
-                {
-                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-                    for (int i = 0; i < 5; i++)
-                        ImGui::Text("Some content %d", i);
-                }
-
-                if (ImGui::CollapsingHeader("Player Entity", ImGuiTreeNodeFlags_None))
-                {
-                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-                    for (int i = 0; i < 5; i++)
-                        ImGui::Text("Some content %d", i);
+                    }
                 }
 
                 ImGui::TreePop();

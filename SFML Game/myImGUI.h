@@ -1,13 +1,16 @@
 #pragma once
 
 #include "Common.h"
+#include "Entity.h"
+#include "EntityManager.h"
+
 class myImGUI
 {
 	sf::RenderWindow* m_window;
 public:
 	myImGUI();
 	void init(sf::RenderWindow* window, int initialSpawnInterval);
-	void update(sf::Clock& deltaClock);
+	void update(sf::Clock& deltaClock, EntityManager& m_entities);
 	void render();
 	void processEvent(sf::Event& event);
 	

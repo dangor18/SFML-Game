@@ -141,7 +141,7 @@ void Game::run()
 	while (m_running)
 	{
 		// ImGui stuff here
-		imGUI.update(deltaClock);
+		imGUI.update(deltaClock, m_entities);
 
 		m_entities.update();
 
