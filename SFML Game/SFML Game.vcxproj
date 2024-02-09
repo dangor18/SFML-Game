@@ -167,6 +167,7 @@
     <ClCompile Include="libraries\ImGUI\imgui_tables.cpp" />
     <ClCompile Include="libraries\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="myImGUI.cpp" />
     <ClCompile Include="vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="libraries\ImGUI\imstb_rectpack.h" />
     <ClInclude Include="libraries\ImGUI\imstb_textedit.h" />
     <ClInclude Include="libraries\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="myImGUI.h" />
     <ClInclude Include="vec2.h" />
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,7 @@ Game::Game(const std::string& config)
 // create game window and store config data
 void Game::init(const std::string& path)
 {
-	//Read in the config file 
+	//Read in the config file
 	std::fstream fin{ path };
 
 	if (!fin.is_open())
@@ -33,18 +33,10 @@ void Game::init(const std::string& path)
 			fin >> frameLimit;
 			fin >> fullScreen;
 
-			if (fullScreen == 0)
-			{
-				m_window.create(sf::VideoMode(width, height), "Geometry Wars", sf::Style::Close);
-				m_window.setFramerateLimit(frameLimit);
-			}
-			else if (fullScreen == 1)
-			{
-				auto fullscreenMode{ sf::VideoMode::getFullscreenModes() };
-				//fullscreenMode[0] is the most compatible mode for fullscreen on this device
-				m_window.create(fullscreenMode[0], "Geometry Wars", sf::Style::Fullscreen);
-				m_window.setFramerateLimit(frameLimit);
-			}
+			m_window.create(sf::VideoMode(width, height), "Geometry Wars", sf::Style::Close);
+			m_window.setFramerateLimit(frameLimit);
+
+			imGUI.init(&m_window, m_spawnInterval);
 		}
 		// load and set font and text parameters for displaying the score
 		else if (identifier == "Font")
@@ -148,17 +140,26 @@ void Game::run()
 {
 	while (m_running)
 	{
+		// ImGui stuff here
+		imGUI.update(deltaClock, m_entities);
+
 		m_entities.update();
 
 		if (!m_paused)
 		{
-			sLifespan();
-			sEnemySpawner();
-			sMovement();
-			sCollision();
+			// check flags before running system
+			if (imGUI.isLifeSpanActive)
+				sLifespan();
+			if (imGUI.isSpawnerActive)
+				sEnemySpawner();
+			if (imGUI.isMovementActive)
+				sMovement();
+			if (imGUI.isCollisionActive)
+				sCollision();
 		}
 		sUserInput();
-		sRender();
+		if (imGUI.isRenderActive)
+			sRender();
 
 		//Increment the current frame
 		++m_currentFrame;
@@ -459,6 +460,8 @@ void Game::sCollision()
 
 void Game::sEnemySpawner()
 {
+	// update spawn rate
+	m_spawnInterval = imGUI.m_spawnInterval;
 	// when timer hits spawn an enemy
 	if (m_currentFrame % m_spawnInterval == 0)
 	{
@@ -488,7 +491,10 @@ void Game::sRender()
 			m_window.draw(e->cShape->circle);
 		}
 	}
-
+	// ImGui stuff here
+	
+	imGUI.render();
+	
 	m_window.display(); // update the window display here, after all entities have been drawn
 }
 
@@ -498,8 +504,10 @@ void Game::sUserInput()
 	sf::Event event;
 	while (m_window.pollEvent(event))
 	{
+		imGUI.processEvent(event);
 		if (event.type == sf::Event::Closed)
 		{
+			//m_window.close();
 			// setting this to false will terminate the run() function
 			m_running = false;
 		}

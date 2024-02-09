@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "Entity.h"
 #include "EntityManager.h"
+#include "myImGUI.h"
 
 struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
 struct EnemyConfig { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L; float SMIN, SMAX; };
@@ -10,6 +11,8 @@ struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
 
 class Game 
 {
+	sf::Clock			deltaClock;
+	myImGUI				imGUI;
 	sf::RenderWindow	m_window;			// the window we will draw to
 	bool				m_paused = false;	// whether we update the game logic
 	bool				m_running = true;	// whether the game is running
@@ -22,7 +25,6 @@ class Game
 	int					score = 0;
 	int					m_spawnInterval = 1000;
 	int					m_currentFrame = 0;
-	sf::Clock			m_clock;
 
 	std::shared_ptr<Entity> m_player;
 
