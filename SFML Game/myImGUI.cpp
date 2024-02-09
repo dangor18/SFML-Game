@@ -46,7 +46,7 @@ void myImGUI::update(sf::Clock& deltaClock, EntityManager & m_entities)
                 {
                     if (ImGui::CollapsingHeader(type, ImGuiTreeNodeFlags_None))
                     {
-                        if (ImGui::BeginTable("asdf", 4))
+                        if (ImGui::BeginTable("", 4))
                         {
                             for (auto& e : m_entities.getEntities(type))
                             {
@@ -69,14 +69,29 @@ void myImGUI::update(sf::Clock& deltaClock, EntityManager & m_entities)
             // all node
             if (ImGui::TreeNode("All Entities"))
             {
-                if (ImGui::CollapsingHeader("Header", ImGuiTreeNodeFlags_None))
+                if (ImGui::BeginTable("", 5))
                 {
-                    ImGui::Text("IsItemHovered: %d", ImGui::IsItemHovered());
-                    for (int i = 0; i < 5; i++)
-                        ImGui::Text("Some content %d", i);
+                    for (auto& e : m_entities.getEntities())
+                    {
+                        // don't want to be able to destroy player entity
+                        if (!(e->getTag() == "player"))
+                        {
+                            ImGui::TableNextColumn();
+                            ImGui::Text("ID: %zu", e->getID());
+                            ImGui::TableNextColumn();
+                            ImGui::Text("pos: (%.2f , %.2f)", e->cTransform->pos.x, e->cTransform->pos.y);
+                            ImGui::TableNextColumn();
+                            ImGui::Text("velocity: (%.2f , %.2f)", e->cTransform->velocity.x, e->cTransform->velocity.y);
+                            ImGui::TableNextColumn();
+                            // kill entity when clicked
+                            if (ImGui::Button("D"))
+                                e->destroy();
+                            ImGui::TableNextRow();
+                        }
+                    }
                 }
+                ImGui::EndTable();
                 
-
                 ImGui::TreePop();
             }
             ImGui::EndTabItem();
